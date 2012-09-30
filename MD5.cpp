@@ -9,7 +9,7 @@ MD5::MD5()
 char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 {
 	char * md5str = (char*) malloc(sizeof(char)*(len*2+1));
-	static const char hexits[17] = "0123456789ABCDEF";
+	static const char hexits[17] = "0123456789abcdef";
 	int i;
 
 	for (i = 0; i < len; i++) {
