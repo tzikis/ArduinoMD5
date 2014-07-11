@@ -27,7 +27,7 @@
 
 #include <string.h>
 
-typedef unsigned long MD5_u32plus;
+typedef uint32_t MD5_u32plus;
 
 typedef struct {
 	MD5_u32plus lo, hi;
@@ -40,7 +40,7 @@ class MD5
 {
 public:
 	MD5();
-	static unsigned char* make_hash(char *arg);
+	static void make_hash(unsigned char *in, int len unsigned char *digest);
 	static char* make_digest(const unsigned char *digest, int len);
  	static const void *body(void *ctxBuf, const void *data, size_t size);
 	static void MD5Init(void *ctxBuf);
