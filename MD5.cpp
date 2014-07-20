@@ -9,14 +9,14 @@ MD5::MD5()
 char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 {
 	char * md5str = (char*) malloc(sizeof(char)*(len*2+1));
-	static const char hexits[17] = "0123456789abcdef";
-	int i;
-
-	for (i = 0; i < len; i++) {
-		md5str[i * 2]       = hexits[digest[i] >> 4];
-		md5str[(i * 2) + 1] = hexits[digest[i] &  0x0F];
+	const char hexits[] = "0123456789abcdef";
+	int i = 0, j = 0;
+	
+	for(; i < len; i++) {
+		md5str[j++] = hexits[digest[i] >> 4];
+		md5str[j++] = hexits[digest[i] &  0x0F];
 	}
-	md5str[len * 2] = '\0';
+	md5str[j] = '\0';
 	return md5str;
 }
 
@@ -48,12 +48,6 @@ char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
  * memory accesses is just an optimization.  Nothing will break if it
  * doesn't work.
  */
-#if defined(__i386__) || defined(__x86_64__) || defined(__vax__)
-# define SET(n) \
-	(*(MD5_u32plus *)&ptr[(n) * 4])
-# define GET(n) \
-	SET(n)
-#else
 # define SET(n) \
 	(ctx->block[(n)] = \
 	(MD5_u32plus)ptr[(n) * 4] | \
@@ -62,7 +56,6 @@ char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 	((MD5_u32plus)ptr[(n) * 4 + 3] << 24))
 # define GET(n) \
 	(ctx->block[(n)])
-#endif
 
 /*
  * This processes one or more 64-byte data blocks, but does NOT update
@@ -275,12 +268,11 @@ void MD5::MD5Final(unsigned char *result, void *ctxBuf)
 
 	memset(ctx, 0, sizeof(*ctx));
 }
-unsigned char* MD5::make_hash(char *arg)
+
+void MD5::make_hash(unsigned char *in, int len unsigned char *digest)
 {
 	MD5_CTX context;
-	unsigned char digest[16];
 	MD5Init(&context);
-	MD5Update(&context, arg, strlen(arg));
+	MD5Update(&context, in, len);
 	MD5Final(digest, &context);
-	return digest;
 }
