@@ -11,7 +11,8 @@ void setup()
   //give it a second
   delay(1000);
   //generate the MD5 hash for our string
-  unsigned char* hash=MD5::make_hash("hello world");
+  unsigned char hash[16];
+  MD5::make_hash((unsigned char*) "hello world", 12, hash);
   //generate the digest (hex encoding) of our hash
   char *md5str = MD5::make_digest(hash, 16);
   //print it on our serial monitor

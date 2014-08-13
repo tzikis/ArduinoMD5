@@ -269,7 +269,7 @@ void MD5::MD5Final(unsigned char *result, void *ctxBuf)
 	memset(ctx, 0, sizeof(*ctx));
 }
 
-void MD5::make_hash(unsigned char *in, int len unsigned char *digest)
+void MD5::make_hash(unsigned char *in, int len, unsigned char *digest)
 {
 	MD5_CTX context;
 	MD5Init(&context);

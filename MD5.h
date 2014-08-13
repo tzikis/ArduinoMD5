@@ -40,7 +40,7 @@ class MD5
 {
 public:
 	MD5();
-	static void make_hash(unsigned char *in, int len unsigned char *digest);
+	static void make_hash(unsigned char *in, int len, unsigned char *digest);
 	static char* make_digest(const unsigned char *digest, int len);
  	static const void *body(void *ctxBuf, const void *data, size_t size);
 	static void MD5Init(void *ctxBuf);
