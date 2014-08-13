@@ -71,23 +71,11 @@ char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 const void *MD5::body(void *ctxBuf, const void *data, size_t size)
 {
 	MD5_CTX *ctx = (MD5_CTX*)ctxBuf;
-	const unsigned char *ptr;
-	MD5_u32plus a, b, c, d;
-	MD5_u32plus saved_a, saved_b, saved_c, saved_d;
+	const uint8_t *ptr = (uint8_t *)data;
+	MD5_u32plus a = ctx->a, b = ctx->b, c = ctx->c, d = ctx->d;
+	MD5_u32plus saved_a = a, saved_b = b, saved_c = c, saved_d = d;
 
-	ptr = (unsigned char*)data;
-
-	a = ctx->a;
-	b = ctx->b;
-	c = ctx->c;
-	d = ctx->d;
-
-	do {
-		saved_a = a;
-		saved_b = b;
-		saved_c = c;
-		saved_d = d;
-
+	for(;;) {
 /* Round 1 */
 		STEP(F, a, b, c, d, SET(0), 0xd76aa478, 7)
 		STEP(F, d, a, b, c, SET(1), 0xe8c7b756, 12)
@@ -166,7 +154,16 @@ const void *MD5::body(void *ctxBuf, const void *data, size_t size)
 		d += saved_d;
 
 		ptr += 64;
-	} while (size -= 64);
+		size -= 64;
+		
+		if (size == 0)
+			break;
+			
+		saved_a = a;
+		saved_b = b;
+		saved_c = c;
+		saved_d = d;
+	}
 
 	ctx->a = a;
 	ctx->b = b;
@@ -184,26 +181,22 @@ void MD5::MD5Init(void *ctxBuf)
 	ctx->c = 0x98badcfe;
 	ctx->d = 0x10325476;
 
-	ctx->lo = 0;
-	ctx->hi = 0;
+	ctx->lo = ctx->hi = 0;
 }
 
 void MD5::MD5Update(void *ctxBuf, const void *data, size_t size)
 {
 	MD5_CTX *ctx = (MD5_CTX*)ctxBuf;
-	MD5_u32plus saved_lo;
-	MD5_u32plus used, free;
+	MD5_u32plus saved_lo = ctx->lo;
+	MD5_u32plus used = saved_lo & 0x3f;
 
-	saved_lo = ctx->lo;
-	if ((ctx->lo = (saved_lo + size) & 0x1fffffff) < saved_lo) {
+	if ((ctx->lo = (saved_lo + size) & 0x1fffffff) < saved_lo)
 		ctx->hi++;
-	}
+
 	ctx->hi += size >> 29;
 
-	used = saved_lo & 0x3f;
-
 	if (used) {
-		free = 64 - used;
+		MD5_u32plus free = 64 - used;
 
 		if (size < free) {
 			memcpy(&ctx->buffer[used], data, size);
@@ -227,9 +220,7 @@ void MD5::MD5Update(void *ctxBuf, const void *data, size_t size)
 void MD5::MD5Final(unsigned char *result, void *ctxBuf)
 {
 	MD5_CTX *ctx = (MD5_CTX*)ctxBuf;
-	MD5_u32plus used, free;
-
-	used = ctx->lo & 0x3f;
+	MD5_u32plus used = ctx->lo & 0x3f, free;
 
 	ctx->buffer[used++] = 0x80;
 
