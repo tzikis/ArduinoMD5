@@ -14,8 +14,10 @@ void setup()
   unsigned char* hash=MD5::make_hash("hello world");
   //generate the digest (hex encoding) of our hash
   char *md5str = MD5::make_digest(hash, 16);
+  free(hash);
   //print it on our serial monitor
   Serial.println(md5str);
+  free(md5str);
 }
 
 void loop()
