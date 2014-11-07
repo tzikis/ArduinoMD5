@@ -16,6 +16,8 @@ void setup()
   char *md5str = MD5::make_digest(hash, 16);
   //print it on our serial monitor
   Serial.println(md5str);
+  //Give the Memory back to the System if you run the md5 Hash generation in a loop
+  free(md5str);
 }
 
 void loop()
