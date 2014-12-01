@@ -1,8 +1,17 @@
 #ifndef MD5_h
 #define MD5_h
 
-#include "Arduino.h"
+#if  (defined(__linux) || defined(linux)) && !defined(__ARDUINO_X86__)
 
+  #define RF24_LINUX
+  
+  #include <stdint.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+#else
+  #include <Arduino.h>
+#endif
 /*
  * This is an OpenSSL-compatible implementation of the RSA Data Security,
  * Inc. MD5 Message-Digest Algorithm (RFC 1321).
