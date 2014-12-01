@@ -3,8 +3,8 @@
 # Makefile for MD5 examples on Raspberry Pi
 #
 # License: GPL (General Public License)
-# Author:  gnulnulf <arco@appeltaart.mine.nu>
-# Date:    2013/02/07 (version 1.0)
+# Author:  spaniakos <spaniakos@gmail.com>
+# Date:    01/12/2014 (version 1.0)
 #
 # Description:
 # ------------
