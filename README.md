@@ -23,14 +23,15 @@ Serial.println(md5str);
 free(md5str);
 ```
 
-### Raspberry  pi install
+### Raspberry  pi
+install
 ```
 sudo make install
 cd examples_Rpi
 make
 ```
 
-### Raspberry pi after changes
+What to do after changes to the library
 ```
 sudo make clean
 sudo make install
@@ -39,7 +40,7 @@ make clean
 make
 ```
 
-### Raspberry pi changes to a sketch
+What to do after changes to a sketch
 ```
 cd examples_Rpi
 make <sketch>
@@ -49,7 +50,7 @@ make clean
 make
 ```
 
-### Raspberry pi start a sketch
+How to start a sketch
 ```
 cd examples_Rpi
 sudo ./<sketch>
