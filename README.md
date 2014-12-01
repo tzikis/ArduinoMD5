@@ -22,3 +22,20 @@ Serial.println(md5str);
 //Give the Memory back to the System if you run the md5 Hash generation in a loop
 free(md5str);
 ```
+
+### Raspberry  pi install
+```
+sudo make install
+cd examples_Rpi
+make
+```
+
+### Raspberry pi after changes
+```
+sudo make clean
+sudo make install
+cd examples_Rpi
+make clean
+make
+```
+
