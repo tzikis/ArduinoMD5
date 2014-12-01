@@ -39,3 +39,18 @@ make clean
 make
 ```
 
+### Raspberry pi changes to a sketch
+```
+cd examples_Rpi
+make <sketch>
+
+or 
+make clean
+make
+```
+
+### Raspberry pi start a sketch
+```
+cd examples_Rpi
+sudo ./<sketch>
+```
