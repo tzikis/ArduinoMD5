@@ -1,17 +1,7 @@
 #ifndef MD5_h
 #define MD5_h
 
-#if  (defined(__linux) || defined(linux)) && !defined(__ARDUINO_X86__)
-
-  #define RF24_LINUX
-  
-  #include <stdint.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-#else
-  #include <Arduino.h>
-#endif
+#include "MD5_config.h"
 /*
  * This is an OpenSSL-compatible implementation of the RSA Data Security,
  * Inc. MD5 Message-Digest Algorithm (RFC 1321).
@@ -34,8 +24,6 @@
  * <scott@macvicar.net>
  */
 
-#include <string.h>
-
 typedef unsigned long MD5_u32plus;
 
 typedef struct {
@@ -49,7 +37,7 @@ class MD5
 {
 public:
 	MD5();
-	static unsigned char* make_hash(const char *arg);
+	static unsigned char* make_hash(char *arg);
 	static char* make_digest(const unsigned char *digest, int len);
  	static const void *body(void *ctxBuf, const void *data, size_t size);
 	static void MD5Init(void *ctxBuf);
