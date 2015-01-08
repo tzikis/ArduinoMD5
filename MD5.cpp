@@ -23,9 +23,10 @@ char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 /*
  * The basic MD5 functions.
  *
- * F and G are optimized compared to their RFC 1321 definitions for
+ * E and G are optimized compared to their RFC 1321 definitions for
  * architectures that lack an AND-NOT instruction, just like in Colin Plumb's
  * implementation.
+ * E() has been used instead of F() because F() is already defined in the Arduino core
  */
 #define E(x, y, z)			((z) ^ ((x) & ((y) ^ (z))))
 #define G(x, y, z)			((y) ^ ((z) & ((x) ^ (y))))
@@ -88,7 +89,9 @@ const void *MD5::body(void *ctxBuf, const void *data, size_t size)
 		saved_c = c;
 		saved_d = d;
 
-/* Round 1 */
+/* Round 1
+ * E() has been used instead of F() because F() is already defined in the Arduino core
+ */
 		STEP(E, a, b, c, d, SET(0), 0xd76aa478, 7)
 		STEP(E, d, a, b, c, SET(1), 0xe8c7b756, 12)
 		STEP(E, c, d, a, b, SET(2), 0x242070db, 17)
