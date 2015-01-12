@@ -285,3 +285,11 @@ unsigned char* MD5::make_hash(char *arg)
 	return hash;
 }
 
+/******************************************************************************/
+#if defined(MD5_LINUX)
+double MD5::millis(){
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec + 0.000001 * tv.tv_usec);
+}
+#endif
+

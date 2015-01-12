@@ -43,6 +43,13 @@ public:
 	static void MD5Init(void *ctxBuf);
 	static void MD5Final(unsigned char *result, void *ctxBuf);
 	static void MD5Update(void *ctxBuf, const void *data, size_t size);
+	#if defined(MD5_LINUX)
+			double millis();
+	#endif
+private:
+	#if defined(MD5_LINUX)
+			timeval tv;
+	#endif
 };
 
 #endif

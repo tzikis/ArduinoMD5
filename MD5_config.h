@@ -3,7 +3,7 @@
 
 #if  (defined(__linux) || defined(linux)) && !defined(__ARDUINO_X86__)
 
-  #define RF24_LINUX
+  #define MD5_LINUX
   
   #include <stdint.h>
   #include <stdio.h>
