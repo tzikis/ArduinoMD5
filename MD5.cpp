@@ -23,11 +23,12 @@ char* MD5::make_digest(const unsigned char *digest, int len) /* {{{ */
 /*
  * The basic MD5 functions.
  *
- * F and G are optimized compared to their RFC 1321 definitions for
+ * E and G are optimized compared to their RFC 1321 definitions for
  * architectures that lack an AND-NOT instruction, just like in Colin Plumb's
  * implementation.
+ * E() has been used instead of F() because F() is already defined in the Arduino core
  */
-#define F(x, y, z)			((z) ^ ((x) & ((y) ^ (z))))
+#define E(x, y, z)			((z) ^ ((x) & ((y) ^ (z))))
 #define G(x, y, z)			((y) ^ ((z) & ((x) ^ (y))))
 #define H(x, y, z)			((x) ^ (y) ^ (z))
 #define I(x, y, z)			((y) ^ ((x) | ~(z)))
@@ -88,23 +89,25 @@ const void *MD5::body(void *ctxBuf, const void *data, size_t size)
 		saved_c = c;
 		saved_d = d;
 
-/* Round 1 */
-		STEP(F, a, b, c, d, SET(0), 0xd76aa478, 7)
-		STEP(F, d, a, b, c, SET(1), 0xe8c7b756, 12)
-		STEP(F, c, d, a, b, SET(2), 0x242070db, 17)
-		STEP(F, b, c, d, a, SET(3), 0xc1bdceee, 22)
-		STEP(F, a, b, c, d, SET(4), 0xf57c0faf, 7)
-		STEP(F, d, a, b, c, SET(5), 0x4787c62a, 12)
-		STEP(F, c, d, a, b, SET(6), 0xa8304613, 17)
-		STEP(F, b, c, d, a, SET(7), 0xfd469501, 22)
-		STEP(F, a, b, c, d, SET(8), 0x698098d8, 7)
-		STEP(F, d, a, b, c, SET(9), 0x8b44f7af, 12)
-		STEP(F, c, d, a, b, SET(10), 0xffff5bb1, 17)
-		STEP(F, b, c, d, a, SET(11), 0x895cd7be, 22)
-		STEP(F, a, b, c, d, SET(12), 0x6b901122, 7)
-		STEP(F, d, a, b, c, SET(13), 0xfd987193, 12)
-		STEP(F, c, d, a, b, SET(14), 0xa679438e, 17)
-		STEP(F, b, c, d, a, SET(15), 0x49b40821, 22)
+/* Round 1
+ * E() has been used instead of F() because F() is already defined in the Arduino core
+ */
+		STEP(E, a, b, c, d, SET(0), 0xd76aa478, 7)
+		STEP(E, d, a, b, c, SET(1), 0xe8c7b756, 12)
+		STEP(E, c, d, a, b, SET(2), 0x242070db, 17)
+		STEP(E, b, c, d, a, SET(3), 0xc1bdceee, 22)
+		STEP(E, a, b, c, d, SET(4), 0xf57c0faf, 7)
+		STEP(E, d, a, b, c, SET(5), 0x4787c62a, 12)
+		STEP(E, c, d, a, b, SET(6), 0xa8304613, 17)
+		STEP(E, b, c, d, a, SET(7), 0xfd469501, 22)
+		STEP(E, a, b, c, d, SET(8), 0x698098d8, 7)
+		STEP(E, d, a, b, c, SET(9), 0x8b44f7af, 12)
+		STEP(E, c, d, a, b, SET(10), 0xffff5bb1, 17)
+		STEP(E, b, c, d, a, SET(11), 0x895cd7be, 22)
+		STEP(E, a, b, c, d, SET(12), 0x6b901122, 7)
+		STEP(E, d, a, b, c, SET(13), 0xfd987193, 12)
+		STEP(E, c, d, a, b, SET(14), 0xa679438e, 17)
+		STEP(E, b, c, d, a, SET(15), 0x49b40821, 22)
 
 /* Round 2 */
 		STEP(G, a, b, c, d, GET(1), 0xf61e2562, 5)
