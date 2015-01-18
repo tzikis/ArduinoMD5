@@ -310,7 +310,7 @@ static char* hmac_md5(char *key,char *arg){
     	o_key_pad[i] = HMAC_OPAD ^ l_key[i];
     	i_key_pad[i] = HMAC_IPAD ^ l_key[i];
     }
-    return md5(strcat(o_key_pad,strcat(i_key_pad,arg)));
+    return md5(strcat(o_key_pad,md5(strcat(i_key_pad,arg))));
 }
 
 /******************************************************************************/
