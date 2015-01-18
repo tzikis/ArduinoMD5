@@ -299,10 +299,9 @@ static char* hmac_md5(char *key,char *arg){
 	}
 	if (length(key) < BLOCK_SIZE){
         	memcpy(l_key,key,strlen(key));
-        	//use the key as is
-        	//for (int i=(BLOCK_SIZE - strlen(key));i<BLOCK_SIZE;i++){
-        	//	l_key[i] = 0x00; // keys shorter than blocksize are zero-padded	
-        	//}optimal is to pad the key with 0x00 but since we constol the keys we ignor this.
+        	for (int i=(BLOCK_SIZE - strlen(key));i<BLOCK_SIZE;i++){
+        		sprintf(l_key[i],"%02x",0x00); // keys shorter than blocksize are zero-padded	
+        	}
 	}
     int i = 0;
     char o_key_pad[BLOCK_SIZE];
