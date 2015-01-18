@@ -1,7 +1,5 @@
 #include <MD5.h>
 
-MD5 md5;
-
 int main(int argc, char** argv) 
 {
   double ms;
