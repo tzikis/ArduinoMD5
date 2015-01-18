@@ -13,9 +13,9 @@ void setup()
   delay(1000);
   //generate the MD5 hash for our string
   ms = micros();
-  unsigned char* hash=MD5::make_hash("abc");
+  unsigned char* hash=md5.make_hash("abc");
   //generate the digest (hex encoding) of our hash
-  char *md5str = MD5::make_digest(hash, 16);
+  char *md5str = md5.make_digest(hash, 16);
   free(hash);
   Serial.print("done. (");
   ms = micros() - ms;
@@ -30,9 +30,9 @@ void setup()
   
   //generate the MD5 hash for our string
   ms = micros();
-  hash=MD5::make_hash("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+  hash=md5.make_hash("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
   //generate the digest (hex encoding) of our hash
-  md5str = MD5::make_digest(hash, 16);
+  md5str = md5.make_digest(hash, 16);
   Serial.print("done. (");
   ms = micros() - ms;
   Serial.print(ms);
@@ -50,9 +50,9 @@ void setup()
     aa[i] = 'a';
   aa[1000000] = '\0';
   ms = micros();
-  hash=MD5::make_hash(aa);
+  hash=md5.make_hash(aa);
   //generate the digest (hex encoding) of our hash
-  md5str = MD5::make_digest(hash, 16);
+  md5str = md5.make_digest(hash, 16);
   Serial.print("done. (");
   ms = micros() - ms;
   Serial.print(ms);
