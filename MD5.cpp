@@ -294,23 +294,24 @@ static char* md5(char *arg){
 
 static char* hmac_md5(char *key,char *arg){
 	char l_key[BLOCK_SIZE];
+	nt i = 0;
+	
 	if (strlen(key) > BLOCK_SIZE){
         	memcpy(&l_key,md5(key),BLOCK_SIZE) // keys longer than blocksize are shortened
-	}
-	if (length(key) < BLOCK_SIZE){
-        	memcpy(l_key,key,strlen(key));
-        	for (int i=(BLOCK_SIZE - strlen(key));i<BLOCK_SIZE;i++){
+	}else (strlen(key) <= BLOCK_SIZE){
+        	memcpy(&l_key,key,strlen(key));
+        	for (i=(BLOCK_SIZE - strlen(key));i>0;i++){
         		sprintf(l_key[i],"%02x",0x00); // keys shorter than blocksize are zero-padded	
         	}
 	}
-    int i = 0;
-    char o_key_pad[BLOCK_SIZE];
-    char i_key_pad[BLOCK_SIZE];
-    for (i=0;i<16;i++){
-    	o_key_pad[i] = HMAC_OPAD ^ l_key[i];
-    	i_key_pad[i] = HMAC_IPAD ^ l_key[i];
-    }
-    return md5(strcat(o_key_pad,md5(strcat(i_key_pad,arg))));
+	char o_key_pad[BLOCK_SIZE];
+	char i_key_pad[BLOCK_SIZE];
+	for (i=0;i<16;i++){
+		o_key_pad[i] = HMAC_OPAD ^ l_key[i];
+		i_key_pad[i] = HMAC_IPAD ^ l_key[i];
+		
+	}
+	return md5(strcat(o_key_pad,md5(strcat(i_key_pad,arg))));
 }
 
 /******************************************************************************/
