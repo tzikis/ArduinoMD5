@@ -281,11 +281,37 @@ void MD5::MD5Final(unsigned char *result, void *ctxBuf)
 unsigned char* MD5::make_hash(char *arg)
 {
 	MD5_CTX context;
-	unsigned char * hash = (unsigned char *) malloc(16);
+	unsigned char * hash = (unsigned char *) malloc(BLOCK_SIZE);
 	MD5Init(&context);
 	MD5Update(&context, arg, strlen(arg));
 	MD5Final(hash, &context);
 	return hash;
+}
+
+static char* md5(char *arg){
+	return md5.make_digest(make_hash(arg), BLOCK_SIZE);
+}
+
+static char* hmac_md5(char *key,char *arg){
+	char l_key[BLOCK_SIZE];
+	if (strlen(key) > BLOCK_SIZE){
+        	memcpy(&l_key,md5(key),BLOCK_SIZE) // keys longer than blocksize are shortened
+	}
+	if (length(key) < BLOCK_SIZE){
+        	memcpy(l_key,key,strlen(key));
+        	//use the key as is
+        	//for (int i=(BLOCK_SIZE - strlen(key));i<BLOCK_SIZE;i++){
+        	//	l_key[i] = 0x00; // keys shorter than blocksize are zero-padded	
+        	//}optimal is to pad the key with 0x00 but since we constol the keys we ignor this.
+	}
+    int i = 0;
+    char o_key_pad[BLOCK_SIZE];
+    char i_key_pad[BLOCK_SIZE];
+    for (i=0;i<16;i++){
+    	o_key_pad[i] = HMAC_OPAD ^ l_key[i];
+    	i_key_pad[i] = HMAC_IPAD ^ l_key[i];
+    }
+    return md5(strcat(o_key_pad,strcat(i_key_pad,arg)));
 }
 
 /******************************************************************************/
@@ -294,5 +320,6 @@ double MD5::millis(){
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec + 0.000001 * tv.tv_usec);
 }
+extern MD5 md5;
 #endif
 
