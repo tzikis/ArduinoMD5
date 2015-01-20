@@ -1,4 +1,6 @@
 #include <MD5.h>
+#include "printf"
+MD5  hashMD5;
 /*
 This is en example of how to use my MD5 library. It provides two
 easy-to-use methods, one for generating the MD5 hash, and the second
@@ -6,6 +8,7 @@ one to generate the hex encoding of the hash, which is frequently used.
 */
 void setup()
 {
+  printf_begin();
   unsigned long ms;
   //initialize serial
   Serial.begin(9600);
@@ -13,10 +16,7 @@ void setup()
   delay(1000);
   //generate the MD5 hash for our string
   ms = micros();
-  unsigned char* hash=md5.make_hash("abc");
-  //generate the digest (hex encoding) of our hash
-  char *md5str = md5.make_digest(hash, 16);
-  free(hash);
+  char *md5str = hashMD5.md5("abc");;
   Serial.print("done. (");
   ms = micros() - ms;
   Serial.print(ms);
@@ -30,9 +30,8 @@ void setup()
   
   //generate the MD5 hash for our string
   ms = micros();
-  hash=md5.make_hash("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+  md5str = hashMD5.md5("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
   //generate the digest (hex encoding) of our hash
-  md5str = md5.make_digest(hash, 16);
   Serial.print("done. (");
   ms = micros() - ms;
   Serial.print(ms);
@@ -50,9 +49,7 @@ void setup()
     aa[i] = 'a';
   aa[1000000] = '\0';
   ms = micros();
-  hash=md5.make_hash(aa);
-  //generate the digest (hex encoding) of our hash
-  md5str = md5.make_digest(hash, 16);
+  md5str = hashMD5.md5(aa);
   Serial.print("done. (");
   ms = micros() - ms;
   Serial.print(ms);
@@ -62,8 +59,29 @@ void setup()
   Serial.print("RESULT  :");
   Serial.println(md5str);
   Serial.println();
-  //Give the Memory back to the System if you run the md5 Hash generation in a loop
-  free(md5str);
+  
+  unsigned char digest[16];
+  unsigned char key[5] = "Jefe";
+  int key_len = 4;
+  unsigned char text[29] = "what do ya want for nothing?";
+  int text_len = 28;
+  ms = micros();
+  hashMD5.hmac_md5(text, text_len, key, key_len, digest);
+  for (int j=0;j<16;j++){
+   printf("%02x",digest[i]); 
+  }
+  md5str = hashMD5.make_digest(digest,16);
+  //generate the digest (hex encoding) of our hash
+  Serial.print("done. (");
+  ms = micros() - ms;
+  Serial.print(ms);
+  Serial.println(" micros)");
+  Serial.println("PLAIN   :what do ya want for nothing?");
+  Serial.println("KEY     :Jefe");
+  Serial.println("EXPECTED:750c783ee6ab0b503eaa86e310a5db738");
+  Serial.print("RESULT  :");
+  Serial.println(md5str);
+  Serial.println();
 }
 
 void loop()

@@ -288,30 +288,48 @@ unsigned char* MD5::make_hash(char *arg)
 	return hash;
 }
 
-static char* md5(char *arg){
-	return md5.make_digest(make_hash(arg), BLOCK_SIZE);
+char* MD5::md5(char *arg){
+	return make_digest(make_hash(arg), BLOCK_SIZE);
 }
 
-static char* hmac_md5(char *key,char *arg){
-	char l_key[BLOCK_SIZE];
-	nt i = 0;
+void MD5::hmac_md5(const void *text, int text_len,void *key, int key_len, unsigned char *digest){
+	MD5_CTX context;
+	unsigned char k_ipad[65];
+	unsigned char k_opad[65];
+	unsigned char tk[BLOCK_SIZE];
+	int i;
 	
-	if (strlen(key) > BLOCK_SIZE){
-        	memcpy(&l_key,md5(key),BLOCK_SIZE) // keys longer than blocksize are shortened
-	}else (strlen(key) <= BLOCK_SIZE){
-        	memcpy(&l_key,key,strlen(key));
-        	for (i=(BLOCK_SIZE - strlen(key));i>0;i++){
-        		sprintf(l_key[i],"%02x",0x00); // keys shorter than blocksize are zero-padded	
-        	}
-	}
-	char o_key_pad[BLOCK_SIZE];
-	char i_key_pad[BLOCK_SIZE];
-	for (i=0;i<16;i++){
-		o_key_pad[i] = HMAC_OPAD ^ l_key[i];
-		i_key_pad[i] = HMAC_IPAD ^ l_key[i];
+	if (key_len > 64){
+		MD5_CTX tctx;
+		MD5Init(&tctx);
+		MD5Update(&tctx, key, key_len);
+		MD5Final(tk,&tctx);
 		
+		key = tk;
+		key_len= 16;
 	}
-	return md5(strcat(o_key_pad,md5(strcat(i_key_pad,arg))));
+	
+	memset( k_ipad, 0, sizeof(k_ipad));
+	memset( k_opad, 0, sizeof(k_opad));
+	memcpy( k_ipad, key, key_len);
+	memcpy( k_opad, key, key_len);
+	
+	for(i = 0; i < 64; i++){
+			k_ipad[i] ^= HMAC_IPAD;
+			k_opad[i] ^= HMAC_OPAD;
+	}
+	
+	//inner
+	MD5Init(&context);
+	MD5Update(&context, k_ipad, 64);
+	MD5Update(&context, text, text_len);
+	MD5Final(digest, &context);
+	
+	//outer
+	MD5Init(&context);
+	MD5Update(&context, k_opad, 64);
+	MD5Update(&context, digest, 16);
+	MD5Final(digest,&context);
 }
 
 /******************************************************************************/
@@ -320,6 +338,5 @@ double MD5::millis(){
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec + 0.000001 * tv.tv_usec);
 }
-extern MD5 md5;
 #endif
 

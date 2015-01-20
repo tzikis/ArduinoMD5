@@ -39,8 +39,8 @@ public:
 	MD5();
 	static unsigned char* make_hash(char *arg);
 	static char* make_digest(const unsigned char *digest, int len);
-	static char* md5(char *arg);
-	static char* hmac_md5(char *key,char *arg);
+	char* md5(char *arg);
+	void hmac_md5(const void *text, int text_len,void *key, int key_len, unsigned char *digest);
  	static const void *body(void *ctxBuf, const void *data, size_t size);
 	static void MD5Init(void *ctxBuf);
 	static void MD5Final(unsigned char *result, void *ctxBuf);
@@ -53,5 +53,5 @@ private:
 			timeval tv;
 	#endif
 };
-
+extern MD5 hashMD5;
 #endif
