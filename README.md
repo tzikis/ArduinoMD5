@@ -15,15 +15,7 @@ You're done. Time for a mojito
 
 ### Usage
 
-If you create md5 Hashes in a loop you must give the Memory back to the System 
-```
-unsigned char* hash=MD5::make_hash("hello world");
-//generate the digest (hex encoding) of our hash
-char *md5str = MD5::make_digest(hash, 16);
-//print it on our serial monitor
-Serial.println(md5str);
-//Give the Memory back to the System if you run the md5 Hash generation in a loop
-free(md5str);
+see examples for md5 and hmac md5
 ```
 
 ### Raspberry  pi

@@ -278,17 +278,17 @@ void MD5::MD5Final(unsigned char *result, void *ctxBuf)
 
 	memset(ctx, 0, sizeof(*ctx));
 }
-unsigned char* MD5::make_hash(char *arg)
+unsigned char* MD5::make_hash(const void *arg)
 {
 	MD5_CTX context;
 	unsigned char * hash = (unsigned char *) malloc(BLOCK_SIZE);
 	MD5Init(&context);
-	MD5Update(&context, arg, strlen(arg));
+	MD5Update(&context, arg, strlen((char*)arg));
 	MD5Final(hash, &context);
 	return hash;
 }
 
-char* MD5::md5(char *arg){
+char* MD5::md5(const void *arg){
 	return make_digest(make_hash(arg), BLOCK_SIZE);
 }
 
@@ -330,6 +330,50 @@ void MD5::hmac_md5(const void *text, int text_len,void *key, int key_len, unsign
 	MD5Update(&context, k_opad, 64);
 	MD5Update(&context, digest, 16);
 	MD5Final(digest,&context);
+}
+
+char* MD5::hmac_md5(const void *text, int text_len,void *key, int key_len){
+	unsigned char digest[17];
+	digest[16] = 0x00;
+	MD5_CTX context;
+	unsigned char k_ipad[65];
+	unsigned char k_opad[65];
+	unsigned char tk[BLOCK_SIZE];
+	int i;
+	
+	if (key_len > 64){
+		MD5_CTX tctx;
+		MD5Init(&tctx);
+		MD5Update(&tctx, key, key_len);
+		MD5Final(tk,&tctx);
+		
+		key = tk;
+		key_len= 16;
+	}
+	
+	memset( k_ipad, 0, sizeof(k_ipad));
+	memset( k_opad, 0, sizeof(k_opad));
+	memcpy( k_ipad, key, key_len);
+	memcpy( k_opad, key, key_len);
+	
+	for(i = 0; i < 64; i++){
+			k_ipad[i] ^= HMAC_IPAD;
+			k_opad[i] ^= HMAC_OPAD;
+	}
+	
+	//inner
+	MD5Init(&context);
+	MD5Update(&context, k_ipad, 64);
+	MD5Update(&context, text, text_len);
+	MD5Final(digest, &context);
+	
+	//outer
+	MD5Init(&context);
+	MD5Update(&context, k_opad, 64);
+	MD5Update(&context, digest, 16);
+	MD5Final(digest,&context);
+	
+	return make_digest(digest,BLOCK_SIZE);
 }
 
 /******************************************************************************/

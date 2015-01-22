@@ -37,10 +37,11 @@ class MD5
 {
 public:
 	MD5();
-	static unsigned char* make_hash(char *arg);
-	static char* make_digest(const unsigned char *digest, int len);
-	char* md5(char *arg);
+	unsigned char* make_hash(const void *arg);
+	char* make_digest(const unsigned char *digest, int len);
+	char* md5(const void *arg);
 	void hmac_md5(const void *text, int text_len,void *key, int key_len, unsigned char *digest);
+	char* hmac_md5(const void *text, int text_len,void *key, int key_len);
  	static const void *body(void *ctxBuf, const void *data, size_t size);
 	static void MD5Init(void *ctxBuf);
 	static void MD5Final(unsigned char *result, void *ctxBuf);

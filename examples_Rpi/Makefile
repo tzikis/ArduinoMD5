@@ -18,7 +18,7 @@ CCFLAGS=-Ofast -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
 #CCFLAGS=
 
 # define all programs
-PROGRAMS = MD5_Hash
+PROGRAMS = MD5_Hash HMAC_MD5
 SOURCES = ${PROGRAMS:=.cpp}
 
 all: ${PROGRAMS}
