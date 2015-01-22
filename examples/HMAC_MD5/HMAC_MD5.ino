@@ -65,7 +65,6 @@ void setup()
                   0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd, 0x00
                  };
   text_len = strlen(text3);
-  Serial.println(text_len);
   ms = micros();
   md5str = hashMD5.hmac_md5(text3, text_len, key3, key_len);
   //generate the digest (hex encoding) of our hash

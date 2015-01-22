@@ -1,51 +1,135 @@
 #include <MD5.h>
 
+MD5 hashMD5;
 int main(int argc, char** argv) 
 {
   double ms;
-  //generate the MD5 hash for our string
-  ms = md5.millis();
-  unsigned char* hash=md5.make_hash("abc");
+  printf("*********************\n");
+  printf("**HMAC MD5 examples**\n");
+  printf("*********************\n");
+
+  char key[] = {0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b,0x0b, 0x00};
+  int key_len;
+  key_len = strlen(key);
+  char *text = "Hi There";
+  int text_len;
+  text_len = strlen(text);
+  ms = hashMD5.millis();
+  char *md5str = hashMD5.hmac_md5(text, text_len, key, key_len);
   //generate the digest (hex encoding) of our hash
-  char *md5str = md5.make_digest(hash, 16);
-  printf("Done in (%f) ms\n",(md5.millis() - ms));
-  free(hash);
-  //print it on our serial monitor
-  printf("PLAIN   :abc\n");
-  printf("EXPECTED:900150983cd24fb0d6963f7d28e17f72\n");
-  printf("RESULT  :");
-  printf("%s\n",md5str);
-  printf("\n");
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :Hi There\n");
+  printf("KEY     :0x0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b\n");
+  printf("EXPECTED:9294727a3638bb1c13f48ef8158bfc9d\n");
+  printf("RESULT  :%s\n\n",md5str);
   
-  //generate the MD5 hash for our string
-  ms = md5.millis();
-  hash= md5.make_hash("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+  char *key2 = "Jefe";
+  key_len = strlen(key2);
+  char *text2 = "what do ya want for nothing?";
+  text_len = strlen(text2);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text2, text_len, key2, key_len);
   //generate the digest (hex encoding) of our hash
-  md5str = md5.make_digest(hash, 16);
-  printf("Done in (%f) ms\n",(md5.millis() - ms));
-  printf("PLAIN   :abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq\n");
-  printf("EXPECTED:8215ef0796a20bcaaae116d3876c664a\n");
-  printf("RESULT  :");
-  printf("%s\n",md5str);
-  printf("\n");
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :what do ya want for nothing?\n");
+  printf("KEY     :Jefe\n");
+  printf("EXPECTED:750c783e6ab0b503eaa86e310a5db738\n");
+  printf("RESULT  :%s\n\n",md5str);
   
-  //generate the MD5 hash for our string
-  char aa[1000001];
-  for (int i=0;i<1000000;i++)
-    aa[i] = 'a';
-  aa[1000000] = '\0';
-  ms = md5.millis();
-  hash= md5.make_hash(aa);
-  //generate the digest (hex encoding) of our hash
-  md5str = md5.make_digest(hash, 16);
-  printf("Done in (%f) ms\n",(md5.millis() - ms));
-  printf("PLAIN   :1,000,000 x a\n");
-  printf("EXPECTED:7707d6ae4e027c70eea2a935c2296f21\n");
-  printf("RESULT  :");
-  printf("%s\n",md5str);
-  printf("\n");
-  //Give the Memory back to the System if you run the md5 Hash generation in a loop
-  free(md5str);
+  char key3[] = {0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa, 0x00};
+  key_len = strlen(key3);
+  char text3[] = {0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,
+                  0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,
+                  0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,
+                  0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,
+                  0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd,0xdd, 0x00
+                 };
+  text_len = strlen(text3);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text3, text_len, key3, key_len);
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+  printf("KEY     :0xdd repeated 50 times\n");
+  printf("EXPECTED:56be34521d144c88dbb8c733f0e8b3f6\n");
+  printf("RESULT  :%s\n\n",md5str);
+  
+  char key4[] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,
+                 0x0b,0x0c,0x0d,0x0e,0x0f,0x10,0x11,0x12,0x13,0x14,
+                 0x15,0x16,0x17,0x18,0x19, 0x00};
+  key_len = strlen(key4);
+  char text4[] = {0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,
+                  0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,
+                  0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,
+                  0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,
+                  0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd,0xcd, 0x00
+                 };
+  text_len = strlen(text4);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text4, text_len, key4, key_len);
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :0x0102030405060708090a0b0c0d0e0f10111213141516171819\n");
+  printf("KEY     :0xcd repeated 50 times\n");
+  printf("EXPECTED:697eaf0aca3a3aea3a75164746ffaa79\n");
+  printf("RESULT  :%s\n\n",md5str);
+  
+  char key5[] = {0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x0c,0x00};
+  key_len = strlen(key5);
+  char *text5 = "Test With Truncation";
+  text_len = strlen(text5);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text5, text_len, key5, key_len);
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :Test With Truncation\n");
+  printf("KEY     :0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c\n");
+  printf("EXPECTED:56461ef2342edc00f9bab995690efd4c\n");
+  printf("RESULT  :%s\n\n",md5str);
+  
+  char key6[] = {0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0x00
+                };
+  key_len = strlen(key6);
+  char *text6 = "Test Using Larger Than Block-Size Key - Hash Key First";
+  text_len = strlen(text6);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text6, text_len, key6, key_len);
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :Test Using Larger Than Block-Size Key - Hash Key First\n");
+  printf("KEY     :0xaa repeated 80 times\n");
+  printf("EXPECTED:6b1ab7fe4bd7bf8f0b62e6ce61b9d0cd\n");
+  printf("RESULT  :%s\n\n",md5str);
+  
+  char key7[] = {0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,
+                 0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0x00
+                };
+  key_len = strlen(key7);
+  char *text7 = "Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
+  text_len = strlen(text7);
+  ms = hashMD5.millis();
+  md5str = hashMD5.hmac_md5(text7, text_len, key7, key_len);
+  ms = hashMD5.millis() - ms;
+  printf("done. (%f millis)\n",ms);
+  printf("PLAIN   :Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data\n");
+  printf("KEY     :0xaa repeated 80 times\n");
+  printf("EXPECTED:6f630fad67cda0ee1fb1f562db3aa53e\n");
+  printf("RESULT  :%s\n\n",md5str);
   return 0;
 }
 
