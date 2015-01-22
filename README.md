@@ -16,7 +16,6 @@ You're done. Time for a mojito
 ### Usage
 
 see examples for md5 and hmac md5
-```
 
 ### Raspberry  pi
 install
