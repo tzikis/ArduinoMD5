@@ -250,7 +250,7 @@ extern MD5 hashMD5;
  *
  * Please refer to:
  *
- * @li <a href="http://spaniakos.github.io/ArduinoMD5/classArduinoMD5.html"><b>KEYGEN</b> Class Documentation</a>
+ * @li <a href="http://spaniakos.github.io/ArduinoMD5/classMD5.html"><b>MD5</b> Class Documentation</a>
  * @li <a href="https://github.com/spaniakos/ArduinoMD5/archive/master.zip"><b>Download</b></a>
  * @li <a href="https://github.com/spaniakos/ArduinoMD5/"><b>Source Code</b></a>
  * @li <a href="http://spaniakos.github.io/">All spaniakos Documentation Main Page</a>
