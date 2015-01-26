@@ -1,3 +1,5 @@
+Please see the full documentation at http://spaniakos.github.io/ArduinoMD5
+
 This is an MD5 library for the Arduino, based on tzikis's MD5 library, which you can find here:
 https://github.com/tzikis/arduino.
 Tzikis library was based on scottmac`s library, which you can find here: 
