@@ -287,4 +287,13 @@ unsigned char* MD5::make_hash(char *arg)
 	MD5Final(hash, &context);
 	return hash;
 }
+unsigned char* MD5::make_hash(char *arg,size_t size)
+{
+	MD5_CTX context;
+	unsigned char * hash = (unsigned char *) malloc(16);
+	MD5Init(&context);
+	MD5Update(&context, arg, size);
+	MD5Final(hash, &context);
+	return hash;
+}
 
