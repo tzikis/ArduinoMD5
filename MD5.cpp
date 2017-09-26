@@ -189,6 +189,9 @@ void MD5::MD5Init(void *ctxBuf)
 
 	ctx->lo = 0;
 	ctx->hi = 0;
+
+    memset(ctx->block, 0, sizeof(ctx->block));
+    memset(ctx->buffer, 0, sizeof(ctx->buffer));
 }
 
 void MD5::MD5Update(void *ctxBuf, const void *data, size_t size)
