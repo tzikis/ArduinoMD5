@@ -21,4 +21,6 @@ char *md5str = MD5::make_digest(hash, 16);
 Serial.println(md5str);
 //Give the Memory back to the System if you run the md5 Hash generation in a loop
 free(md5str);
+//free dynamically allocated 16 byte hash from make_hash()
+free(hash);
 ```
