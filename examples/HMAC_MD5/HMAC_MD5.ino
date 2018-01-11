@@ -27,8 +27,8 @@ void setup()
   ms = micros();
   char *md5str = hashMD5.hmac_md5(text, text_len, key, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :Hi There");
@@ -45,8 +45,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text2, text_len, key2, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :what do ya want for nothing?");
@@ -68,8 +68,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text3, text_len, key3, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -93,8 +93,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text4, text_len, key4, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :0x0102030405060708090a0b0c0d0e0f10111213141516171819");
@@ -111,8 +111,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text5, text_len, key5, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :Test With Truncation");
@@ -137,8 +137,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text6, text_len, key6, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :Test Using Larger Than Block-Size Key - Hash Key First");
@@ -163,8 +163,8 @@ void setup()
   ms = micros();
   md5str = hashMD5.hmac_md5(text7, text_len, key7, key_len);
   //generate the digest (hex encoding) of our hash
-  Serial.print("done. (");
   ms = micros() - ms;
+  Serial.print("done. (");
   Serial.print(ms);
   Serial.println(" micros)");
   Serial.println("PLAIN   :Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data");
